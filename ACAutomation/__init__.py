@@ -13,3 +13,6 @@ class ACAutomation(object):
 
     def matchOne(self, str):
         return _ACAutomation.matchOne(self.ac, str)
+
+    def matchAll(self, str):
+        return _ACAutomation.matchAll(self.ac, str)

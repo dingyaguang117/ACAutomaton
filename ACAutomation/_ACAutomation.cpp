@@ -25,7 +25,7 @@ struct Node{
 
 struct Result
 {
-    int position;
+    unsigned long position;
     const char *word;
 };
 
@@ -63,7 +63,7 @@ class ACAutomation
         }
         p->end = true;
         //TODO： str可能被释放
-        p->word = str;
+        p->word = strdup(str);
     }
 
 
@@ -101,11 +101,10 @@ class ACAutomation
     }
 
 
-    Result matchOne(const char *str)
+    void match(const char *str, bool multi, queue<Result> &ret)
     {
-        Result result={-1, NULL};
         Node *p = this->root;
-        int i = 0;
+        unsigned long i = 0;
         while(str[i])
         {
             //KIND=16, 所以一个字节分成2个4字节
@@ -121,16 +120,14 @@ class ACAutomation
                     p=p->next[index];
                 if(p->end)
                 {
-                    result.position = i;
-                    result.word = p->word;
-                    return result;
+                    Result result = {i- strlen(p->word) + 1, p->word};
+                    ret.push(result);
+                    if(!multi) return;
                 }
             }
             i++;
         }
-        return result;
     }
-        
 };
 
 /****** wrap for python ********/
@@ -154,6 +151,7 @@ static PyObject* ACAutomation_insert(PyObject *self, PyObject* args)
     const char* str;
     int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
     if(!ok) return NULL;
+    printf("insert: %s\n", str);
     ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
     acautomation->insert(str);
     Py_INCREF(Py_None);
@@ -175,11 +173,37 @@ static PyObject* ACAutomation_matchOne(PyObject *self, PyObject* args)
 {
     PyObject *ac = 0;
     const char* str;
+    queue<Result> results;
     int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
     if(!ok) return NULL;
     ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
-    Result result = acautomation->matchOne(str);
-    return Py_BuildValue("is", result.position, result.word);
+    acautomation->match(str, false, results);
+    cout<<results.size()<<endl;
+    if(results.empty())
+    {
+        return Py_BuildValue("ls", -1, 0);
+    }
+    Result result = results.front();
+    return Py_BuildValue("ls", result.position, result.word);
+}
+
+static PyObject* ACAutomation_matchAll(PyObject *self, PyObject* args)
+{
+    PyObject *ac = 0;
+    const char* str;
+    queue<Result> results;
+    int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
+    if(!ok) return NULL;
+    ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
+    acautomation->match(str, true, results);
+    PyObject* pList = PyList_New(results.size());
+    for(int i=0; i<results.size(); ++i)
+    {
+        Result result = results.front();
+        results.pop();
+        PyList_SetItem(pList, i, Py_BuildValue("ls", result.position, result.word));
+    }
+    return pList;
 }
 
 static PyMethodDef Methods[] =
@@ -188,6 +212,7 @@ static PyMethodDef Methods[] =
      { "insert", ACAutomation_insert, METH_VARARGS, "insert string" },
      { "build", ACAutomation_build, METH_VARARGS, "build" },
      { "matchOne", ACAutomation_matchOne, METH_VARARGS, "matchOne" },
+     { "matchAll", ACAutomation_matchAll, METH_VARARGS, "matchAll" },
      { NULL, NULL, 0, NULL }
 };
 
@@ -201,9 +226,10 @@ PyMODINIT_FUNC init_ACAutomation(void)
 int main()
 {
     ACAutomation ac;
-    ac.insert("1111");
-    ac.insert("丁亚光");
+    ac.insert("11");
+    ac.insert("22");
     ac.build();
-    //cout<< ac.matchOne("丁亚光不错~")<<endl;
-    //cout<< ac.matchOne("113333") <<endl;
+    queue<Result> results;
+    ac.match("1112222", true, results);
+    cout<<results.size()<<endl;
 }
