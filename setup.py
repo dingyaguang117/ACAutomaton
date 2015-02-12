@@ -10,7 +10,7 @@ setup(
     url="http://github.coom/dingyaguang117",
     packages=['ACAutomation'],
     ext_modules = [
-        Extension("_ACAutomation", sources=['ACAutomation/_ACAutomation.cpp'])
+        Extension("_ACAutomation", sources=['ACAutomation/wrapper.cpp', 'ACAutomation/_ACAutomation.cpp'])
     ]
 
 )
