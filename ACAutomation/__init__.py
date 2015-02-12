@@ -1,4 +1,6 @@
 __author__ = 'ding'
+__version__ = '0.1'
+
 import _ACAutomation
 
 class ACAutomation(object):

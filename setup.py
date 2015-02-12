@@ -11,6 +11,8 @@ setup(
     packages=['ACAutomation'],
     ext_modules = [
         Extension("_ACAutomation", sources=['ACAutomation/wrapper.cpp', 'ACAutomation/_ACAutomation.cpp'])
-    ]
+    ],
+    keywords='ac-automation ac automation',
+    version='0.1'
 
 )
