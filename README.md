@@ -3,7 +3,7 @@ ACAutomation Python Lib Wrapper
 
 
 # Install
-pip install ACAutomation
+    pip install ACAutomation
 
 # Usage
     >>> from ACAutomation import ACAutomation
@@ -12,8 +12,11 @@ pip install ACAutomation
     >>> a.insert('22')
     >>> a.insert('33')
     >>> a.build()
-    >>> a.matchOne('1111111')
-    (0, '11')
-    >>> a.matchAll('1111111')
-    [(0, '11'), (1, '11'), (2, '11'), (3, '11'), (4, '11'), (5, '11')]
+    >>> a.matchOne('0011222333')
+    (2, '11')
+    >>> a.matchOne('00')
+    (-1, None)
+    >>> a.matchAll('0011222333')
+    [(2, '11'), (4, '22'), (5, '22'), (7, '33'), (7, '33'), (8, '33'), (8, '33')]
+
 
