@@ -4,7 +4,6 @@
 
 static void ACAutomation_Delete(void *ptr)
 {
-    //TODO delete the tree
     ACAutomation * pAC = static_cast<ACAutomation *>(ptr);
     delete pAC;
 }

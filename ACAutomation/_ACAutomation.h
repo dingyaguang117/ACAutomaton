@@ -32,6 +32,7 @@ class ACAutomation
 
     public :
     ACAutomation();
+    ~ACAutomation();
     void insert(const char *str);
     void build();
     void match(const char *str, bool multi, std::queue<Result> &ret);

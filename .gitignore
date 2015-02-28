@@ -2,3 +2,5 @@
 build/
 dist/
 ACAutomation/a.out
+
+*.pyc

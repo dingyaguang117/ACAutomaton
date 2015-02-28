@@ -13,6 +13,6 @@ setup(
         Extension("_ACAutomation", sources=['ACAutomation/wrapper.cpp', 'ACAutomation/_ACAutomation.cpp'])
     ],
     keywords='ac-automation ac automation',
-    version='0.1'
+    version='0.2'
 
 )

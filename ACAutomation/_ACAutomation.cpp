@@ -10,6 +10,23 @@ ACAutomation::ACAutomation()
     this->root = new Node();
 }
 
+void freeNode(Node *node)
+{
+    for(int i=0; i<KIND; ++i)
+    {
+        if(node->next[i] != NULL)
+        {
+            freeNode(node->next[i]);
+        }
+    }
+    delete node->word;
+    delete node;
+}
+
+ACAutomation::~ACAutomation()
+{
+    freeNode(this->root);
+}
 
 void ACAutomation::insert(const char *str)
 {
@@ -30,7 +47,6 @@ void ACAutomation::insert(const char *str)
         i++;
     }
     p->end = true;
-    //TODO： str可能被释放
     p->word = strdup(str);
 }
 
@@ -106,5 +122,6 @@ int main()
     ac.build();
     queue<Result> results;
     ac.match("1111111111", true, results);
+    ac.~ACAutomation();
     cout<<results.size()<<endl;
 }
