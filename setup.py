@@ -1,7 +1,6 @@
 __author__ = 'ding'
 from distutils.core import setup, Extension
 
-
 setup(
     name="ACAutomation",
     description="ACAutomation python wrapper,support unicode",
@@ -10,9 +9,12 @@ setup(
     url="http://github.coom/dingyaguang117",
     packages=['ACAutomation'],
     ext_modules = [
-        Extension("_ACAutomation", sources=['ACAutomation/wrapper.cpp', 'ACAutomation/_ACAutomation.cpp'])
+        Extension("_ACAutomation",
+            sources=['ACAutomation/wrapper.cpp', 'ACAutomation/_ACAutomation.cpp'],
+            include_dirs=['./ACAutomation'],
+        )
     ],
     keywords='ac-automation ac automation',
-    version='0.2'
+    version='0.5'
 
 )
