@@ -1,3 +1,5 @@
+#include <cstddef>
+#include <cstring>
 #include <queue>
 
 const int KIND = 16;
