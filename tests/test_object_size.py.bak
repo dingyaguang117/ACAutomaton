@@ -14,7 +14,7 @@ class Node():
 if __name__ == '__main__':
     n = Node(16)
     import sys
-    print(sys.getsizeof(None))
-    print(sys.getsizeof(''))
-    print(sys.getsizeof(1))
-    print(sys.getsizeof(n))
+    print sys.getsizeof(None)
+    print sys.getsizeof('')
+    print sys.getsizeof(1)
+    print sys.getsizeof(n)
