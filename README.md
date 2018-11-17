@@ -1,5 +1,10 @@
-# About
-ACAutomation Python Package
+# About  
+ACAutomation Python Package  
+High-performance multi-string lookup data structure
+
+# Notice
+1. If you want to insert unicode string, please encode them to byte string first.
+2. Once you insert a new word to ACAutomation, please remember call build method. You can call build method multiple times.
 
 
 # Install
@@ -22,11 +27,11 @@ ACAutomation Python Package
     [(2, '11'), (4, '22'), (5, '22'), (7, '33'), (7, '33'), (8, '33'), (8, '33')]
 
 
-If you want to insert unicode string, please encode them to string first.
+example for unicode string
 
 	>>> from ACAutomation import ACAutomation
 	>>> a = ACAutomation()
-	>>> a.insert('你好')
+	>>> a.insert(u'你好'.encoding('utf-8'))
 	>>> a.insert('你坏')
 	>>> a.insert('你')
 	>>> a.build()
@@ -40,7 +45,4 @@ If you want to insert unicode string, please encode them to string first.
 	>>> a.build()
 	>>> a.matchAll('不存在')
 	[(0, '\xe4\xb8\x8d\xe5\xad\x98\xe5\x9c\xa8')]
-
-
-Once you insert a new word to ACAutomation, please remember call build method. You can call build method multiple times.
 
