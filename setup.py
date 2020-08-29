@@ -6,7 +6,7 @@ setup(
     description="ACAutomation python wrapper,support unicode",
     author="Yaguang Ding",
     author_email="dingyaguang117@gmail.com",
-    url="http://github.coom/dingyaguang117",
+    url="http://github.com/dingyaguang117/ACAutomation",
     packages=['ACAutomation'],
     ext_modules = [
         Extension("_ACAutomation",
@@ -15,6 +15,6 @@ setup(
         )
     ],
     keywords='ac-automation ac automation',
-    version='0.7'
+    version='1.0'
 
 )
