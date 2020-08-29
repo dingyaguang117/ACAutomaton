@@ -2,11 +2,31 @@
 #include "_ACAutomation.h"
 /****** wrap for python ********/
 
-static void ACAutomation_Delete(void *ptr)
-{
-    ACAutomation * pAC = static_cast<ACAutomation *>(ptr);
-    delete pAC;
-}
+// for python3 use PyCapsule_GetPointer instead of PyCObject_AsVoidPtr
+// ref: http://www.speedupcode.com/c-class-in-python3/
+
+#if PY_MAJOR_VERSION >= 3
+    #define PyCObject_FromVoidPtr(pointer, destructor) \
+     (PyCapsule_New(pointer, "ACAutomation", destructor))
+    #define PyCObject_AsVoidPtr(capsule) \
+     (PyCapsule_GetPointer(capsule, "ACAutomation"))
+#endif
+
+
+#if PY_MAJOR_VERSION < 3
+    static void ACAutomation_Delete(void *ptr)
+    {
+        ACAutomation * pAC = static_cast<ACAutomation *>(ptr);
+        delete pAC;
+    }
+#else
+    static void ACAutomation_Delete(PyObject *ptr)
+    {
+        ACAutomation * pAC = static_cast<ACAutomation *>(PyCapsule_GetPointer(ptr, "ACAutomation"));
+        delete pAC;
+    }
+#endif 
+
 
 static PyObject* ACAutomation_new(PyObject *self, PyObject* args)
 {
@@ -86,8 +106,28 @@ static PyMethodDef Methods[] =
 };
 
 
-PyMODINIT_FUNC init_ACAutomation(void)
-{
-     //PyObject *m = Py_InitModule( "_ACAutomation", Methods);
-     Py_InitModule( "_ACAutomation", Methods);
-}
+
+#if PY_MAJOR_VERSION < 3
+    PyMODINIT_FUNC init_ACAutomation(void)
+    {
+        Py_InitModule( "_ACAutomation", Methods);
+    }
+#else
+    static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "_ACAutomation", /* m_name */
+        NULL,      /* m_doc */
+        -1,                  /* m_size */
+        Methods,             /* m_methods */
+        NULL,                /* m_reload */
+        NULL,                /* m_traverse */
+        NULL,                /* m_clear */
+        NULL,                /* m_free */
+    };
+
+    PyMODINIT_FUNC PyInit__ACAutomation(void)
+    {
+        PyObject *m = PyModule_Create(&moduledef);
+        return m;
+    }
+#endif
