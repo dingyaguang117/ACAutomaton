@@ -31,7 +31,7 @@ example for unicode string
 
 	>>> from ACAutomation import ACAutomation
 	>>> a = ACAutomation()
-	>>> a.insert(u'你好'.encoding('utf-8'))
+	>>> a.insert('你好')
 	>>> a.insert('你坏')
 	>>> a.insert('你')
 	>>> a.build()

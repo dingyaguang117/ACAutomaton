@@ -1,1 +1,3 @@
 graft ACAutomation
+include README.md
+global-exclude *.pyc
