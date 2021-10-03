@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "_ACAutomation.h"
+#include "_ACAutomaton.h"
 /****** wrap for python ********/
 
 // for python3 use PyCapsule_GetPointer instead of PyCObject_AsVoidPtr
@@ -7,66 +7,66 @@
 
 #if PY_MAJOR_VERSION >= 3
     #define PyCObject_FromVoidPtr(pointer, destructor) \
-     (PyCapsule_New(pointer, "ACAutomation", destructor))
+     (PyCapsule_New(pointer, "ACAutomaton", destructor))
     #define PyCObject_AsVoidPtr(capsule) \
-     (PyCapsule_GetPointer(capsule, "ACAutomation"))
+     (PyCapsule_GetPointer(capsule, "ACAutomaton"))
 #endif
 
 
 #if PY_MAJOR_VERSION < 3
-    static void ACAutomation_Delete(void *ptr)
+    static void ACAutomaton_Delete(void *ptr)
     {
-        ACAutomation * pAC = static_cast<ACAutomation *>(ptr);
+        ACAutomaton * pAC = static_cast<ACAutomaton *>(ptr);
         delete pAC;
     }
 #else
-    static void ACAutomation_Delete(PyObject *ptr)
+    static void ACAutomaton_Delete(PyObject *ptr)
     {
-        ACAutomation * pAC = static_cast<ACAutomation *>(PyCapsule_GetPointer(ptr, "ACAutomation"));
+        ACAutomaton * pAC = static_cast<ACAutomaton *>(PyCapsule_GetPointer(ptr, "ACAutomaton"));
         delete pAC;
     }
 #endif 
 
 
-static PyObject* ACAutomation_new(PyObject *self, PyObject* args)
+static PyObject* ACAutomaton_new(PyObject *self, PyObject* args)
 {
-    ACAutomation *pAC = new ACAutomation();
-    return PyCObject_FromVoidPtr(pAC, ACAutomation_Delete);
+    ACAutomaton *pAC = new ACAutomaton();
+    return PyCObject_FromVoidPtr(pAC, ACAutomaton_Delete);
 }
 
-static PyObject* ACAutomation_insert(PyObject *self, PyObject* args)
+static PyObject* ACAutomaton_insert(PyObject *self, PyObject* args)
 {
     PyObject *ac = 0;
     const char* str;
     int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
     if(!ok) return NULL;
     //printf("insert: %s\n", str);
-    ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
-    acautomation->insert(str);
+    ACAutomaton *acautomaton = static_cast<ACAutomaton *>(PyCObject_AsVoidPtr(ac));
+    acautomaton->insert(str);
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyObject* ACAutomation_build(PyObject *self, PyObject* args)
+static PyObject* ACAutomaton_build(PyObject *self, PyObject* args)
 {
     PyObject *ac = 0;
     int ok = PyArg_ParseTuple(args, "O", &ac);
     if(!ok) return NULL;
-    ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
-    acautomation->build();
+    ACAutomaton *acautomaton = static_cast<ACAutomaton *>(PyCObject_AsVoidPtr(ac));
+    acautomaton->build();
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-static PyObject* ACAutomation_matchOne(PyObject *self, PyObject* args)
+static PyObject* ACAutomaton_matchOne(PyObject *self, PyObject* args)
 {
     PyObject *ac = 0;
     const char* str;
     std::queue<Result> results;
     int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
     if(!ok) return NULL;
-    ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
-    acautomation->match(str, false, results);
+    ACAutomaton *acautomaton = static_cast<ACAutomaton *>(PyCObject_AsVoidPtr(ac));
+    acautomaton->match(str, false, results);
     if(results.empty())
     {
         return Py_BuildValue("is", -1, 0);
@@ -75,15 +75,15 @@ static PyObject* ACAutomation_matchOne(PyObject *self, PyObject* args)
     return Py_BuildValue("ls", result.position, result.word);
 }
 
-static PyObject* ACAutomation_matchAll(PyObject *self, PyObject* args)
+static PyObject* ACAutomaton_matchAll(PyObject *self, PyObject* args)
 {
     PyObject *ac = 0;
     const char* str;
     std::queue<Result> results;
     int ok = PyArg_ParseTuple(args, "Os", &ac, &str);
     if(!ok) return NULL;
-    ACAutomation *acautomation = static_cast<ACAutomation *>(PyCObject_AsVoidPtr(ac));
-    acautomation->match(str, true, results);
+    ACAutomaton *acautomaton = static_cast<ACAutomaton *>(PyCObject_AsVoidPtr(ac));
+    acautomaton->match(str, true, results);
     PyObject* pList = PyList_New(results.size());
     unsigned long i = 0;
     while(!results.empty())
@@ -97,25 +97,25 @@ static PyObject* ACAutomation_matchAll(PyObject *self, PyObject* args)
 
 static PyMethodDef Methods[] =
 {
-     { "new", ACAutomation_new, METH_NOARGS, "create a ACAutomation Object" },
-     { "insert", ACAutomation_insert, METH_VARARGS, "insert string" },
-     { "build", ACAutomation_build, METH_VARARGS, "build" },
-     { "matchOne", ACAutomation_matchOne, METH_VARARGS, "matchOne" },
-     { "matchAll", ACAutomation_matchAll, METH_VARARGS, "matchAll" },
+     { "new", ACAutomaton_new, METH_NOARGS, "create a ACAutomaton Object" },
+     { "insert", ACAutomaton_insert, METH_VARARGS, "insert string" },
+     { "build", ACAutomaton_build, METH_VARARGS, "build" },
+     { "matchOne", ACAutomaton_matchOne, METH_VARARGS, "matchOne" },
+     { "matchAll", ACAutomaton_matchAll, METH_VARARGS, "matchAll" },
      { NULL, NULL, 0, NULL }
 };
 
 
 
 #if PY_MAJOR_VERSION < 3
-    PyMODINIT_FUNC init_ACAutomation(void)
+    PyMODINIT_FUNC init_ACAutomaton(void)
     {
-        Py_InitModule( "_ACAutomation", Methods);
+        Py_InitModule( "_ACAutomaton", Methods);
     }
 #else
     static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
-        "_ACAutomation", /* m_name */
+        "_ACAutomaton", /* m_name */
         NULL,      /* m_doc */
         -1,                  /* m_size */
         Methods,             /* m_methods */
@@ -125,7 +125,7 @@ static PyMethodDef Methods[] =
         NULL,                /* m_free */
     };
 
-    PyMODINIT_FUNC PyInit__ACAutomation(void)
+    PyMODINIT_FUNC PyInit__ACAutomaton(void)
     {
         PyObject *m = PyModule_Create(&moduledef);
         return m;

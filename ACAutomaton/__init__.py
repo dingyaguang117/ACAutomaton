@@ -1,15 +1,15 @@
 __author__ = 'ding'
 __version__ = '1.0.3'
 
-import _ACAutomation
+import _ACAutomaton
 
-class ACAutomation(object):
+class ACAutomaton(object):
     def __init__(self):
         '''
-        init a ACAutomation
+        init a ACAutomaton
         :return:
         '''
-        self.ac = _ACAutomation.new()
+        self.ac = _ACAutomaton.new()
 
     def insert(self, string):
         '''
@@ -17,14 +17,14 @@ class ACAutomation(object):
         :param string:
         :return: None
         '''
-        _ACAutomation.insert(self.ac, string)
+        _ACAutomaton.insert(self.ac, string)
 
     def build(self):
         '''
         Buid ac-automaion before match*
         :return: None
         '''
-        _ACAutomation.build(self.ac)
+        _ACAutomaton.build(self.ac)
 
     def matchOne(self, string):
         '''
@@ -32,7 +32,7 @@ class ACAutomation(object):
         :param string:
         :return: a tuple (position, 'keyword'). if didn't find one return (-1, None);
         '''
-        return _ACAutomation.matchOne(self.ac, string)
+        return _ACAutomaton.matchOne(self.ac, string)
 
     def matchAll(self, string):
         '''
@@ -40,4 +40,4 @@ class ACAutomation(object):
         :param string:
         :return: a list of tuple (position, 'keyword'). if didn't find one return empty list [];
         '''
-        return _ACAutomation.matchAll(self.ac, string)
+        return _ACAutomaton.matchAll(self.ac, string)

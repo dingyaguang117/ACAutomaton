@@ -26,15 +26,15 @@ struct Result
 };
 
 
-class ACAutomation
+class ACAutomaton
 {
     private:
     Node *root;
     std::queue<Node*> q;
 
     public :
-    ACAutomation();
-    ~ACAutomation();
+    ACAutomaton();
+    ~ACAutomaton();
     void insert(const char *str);
     void build();
     void match(const char *str, bool multi, std::queue<Result> &ret);

@@ -1,11 +1,11 @@
-#include "_ACAutomation.h"
+#include "_ACAutomaton.h"
 #include <iostream>
 
 using namespace std;
 
 
 
-ACAutomation::ACAutomation()
+ACAutomaton::ACAutomaton()
 {
     this->root = new Node();
 }
@@ -23,12 +23,12 @@ void freeNode(Node *node)
     delete node;
 }
 
-ACAutomation::~ACAutomation()
+ACAutomaton::~ACAutomaton()
 {
     freeNode(this->root);
 }
 
-void ACAutomation::insert(const char *str)
+void ACAutomaton::insert(const char *str)
 {
     Node *p = this->root;
     int i = 0;
@@ -51,7 +51,7 @@ void ACAutomation::insert(const char *str)
 }
 
 
-void ACAutomation::build(){
+void ACAutomaton::build(){
     this->root->fail = NULL;
     this->q.push(this->root);
     while(!this->q.empty())
@@ -85,7 +85,7 @@ void ACAutomation::build(){
 }
 
 
-void ACAutomation::match(const char *str, bool multi, queue<Result> &ret)
+void ACAutomaton::match(const char *str, bool multi, queue<Result> &ret)
 {
     Node *p = this->root;
     unsigned long i = 0;
@@ -116,12 +116,12 @@ void ACAutomation::match(const char *str, bool multi, queue<Result> &ret)
 
 int main()
 {
-    ACAutomation ac;
+    ACAutomaton ac;
     ac.insert("11");
     ac.insert("22");
     ac.build();
     queue<Result> results;
     ac.match("1111111111", true, results);
-    ac.~ACAutomation();
+    ac.~ACAutomaton();
     cout<<results.size()<<endl;
 }

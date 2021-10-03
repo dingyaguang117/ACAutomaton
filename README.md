@@ -1,20 +1,20 @@
 # About  
-ACAutomation Python Package  
+ACAutomaton Python Package  
 High-performance multi-string lookup data structure
 
 # Notice
 1. If you want to insert unicode string, please encode them to byte string first.
-2. Once you insert a new word to ACAutomation, please remember call build method. You can call build method multiple times.
+2. Once you insert a new word to ACAutomaton, please remember call build method. You can call build method multiple times.
 
 
 # Install
-    pip install ACAutomation
+    pip install ACAutomaton
 
 # Usage
 
 
-    >>> from ACAutomation import ACAutomation
-    >>> a = ACAutomation()
+    >>> from ACAutomaton import ACAutomaton
+    >>> a = ACAutomaton()
     >>> a.insert('11')
     >>> a.insert('22')
     >>> a.insert('33')
@@ -29,14 +29,14 @@ High-performance multi-string lookup data structure
 
 example for unicode string
 
-	>>> from ACAutomation import ACAutomation
-	>>> a = ACAutomation()
+	>>> from ACAutomaton import ACAutomaton
+	>>> a = ACAutomaton()
 	>>> a.insert('你好')
 	>>> a.insert('你坏')
 	>>> a.insert('你')
 	>>> a.build()
 	>>> a.matchOne('你好你坏你')
-	(0, '\xe4\xbd\xa0'd)
+	(0, '\xe4\xbd\xa0')
 	>>> a.matchAll('你好你坏你不存在')
 	[(0, '\xe4\xbd\xa0'), (0, '\xe4\xbd\xa0\xe5\xa5\xbd'), (6, '\xe4\xbd\xa0'), (6, '\xe4\xbd\xa0\xe5\x9d\x8f'), (12, '\xe4\xbd\xa0')]
 	>>> a.matchAll('不存在')
